@@ -20,22 +20,10 @@ const convertTableRow = (customer: CustomerDto): ConvertTableRowReturn => ({
 })
 
 export const PurchaseCustomerTable: FC<PurchaseCustomerTableProps> = (props) => {
-  const { data, isLoading, isError } = usePurchaseCustomerListQuery(props)
-  if (isLoading) {
-    return <LoadingSkeleton minHeight={'600px'} />
-  }
-  if (isError) {
-    return <div>에러 발생</div>
-  }
-
   return (
     <table className={PICO_DATA.layout.classname.container}>
       <TableHeader />
-      <tbody>
-        {data.map((customer) => (
-          <TableRow key={customer.id} {...customer} />
-        ))}
-      </tbody>
+      <TableBody {...props} />
     </table>
   )
 }
@@ -52,9 +40,35 @@ const TableHeader = () => {
     </thead>
   )
 }
+
+const TableBody: FC<PurchaseCustomerTableProps> = (props) => {
+  const { data, isLoading, isError } = usePurchaseCustomerListQuery(props)
+  if (isLoading) {
+    return (
+      <tbody>
+        <tr>
+          <td>
+            <LoadingSkeleton minHeight={'600px'} />
+          </td>
+        </tr>
+      </tbody>
+    )
+  }
+  if (isError) {
+    return <div>에러 발생</div>
+  }
+
+  return (
+    <tbody>
+      {data.map((customer) => (
+        <TableRow key={customer.id} {...customer} />
+      ))}
+    </tbody>
+  )
+}
 const TableRow: FC<ConvertTableRowReturn> = ({ id, name, count, totalAmount }) => {
   return (
-    <tr>
+    <tr style={{ cursor: 'pointer' }}>
       <th scope={PICO_DATA.table.scope.row}>{id}</th>
       <td>{name}</td>
       <td>{count}</td>
