@@ -11,7 +11,6 @@ const usePurchaseFrequencyQuery = (args: Args) =>
     queryKey: ['purchaseFrequency', args],
     queryFn: () => apis.purchaseFrequency.list(args),
     enabled: isDateRangeValid(args),
-    keepPreviousData: true,
   })
 
 export const BarChart = () => {
@@ -20,6 +19,7 @@ export const BarChart = () => {
   if (isLoading) {
     return <LoadingSkeleton />
   }
+  //TODO:  추후 완성도 높일때 작업 필요
   if (isError) {
     return <div>에러 발생</div>
   }
@@ -28,12 +28,13 @@ export const BarChart = () => {
       style={{ minHeight: '500px' }}
       option={{
         title: {
+          // 7월에 한정하지 않는 실제 기능이라면 text 를 동적으로 생성하는 로직 필요
           text: '7월 구매빈도 차트',
           left: 'center', // 제목을 가운데 정렬
         },
         yAxis: {
           type: 'category',
-          data: data?.map((d) => convertRangeToLabel(d.range)) ?? [],
+          data: data?.map(({ range }) => convertRangeToLabel(range)) ?? [],
           name: '금액별 구분(만원단위)',
           offset: 20,
         },
@@ -44,7 +45,7 @@ export const BarChart = () => {
         },
         series: [
           {
-            data: data?.map((d) => d.count) ?? [],
+            data: data?.map(({ count }) => count) ?? [],
             type: 'bar',
           },
         ],

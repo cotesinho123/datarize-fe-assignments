@@ -40,6 +40,7 @@ const INITIAL_STATE: InternalDateRange = {
 
 type DataRangeAction = { type: 'SET_FROM'; value: string } | { type: 'SET_TO'; value: string } | { type: 'COMMIT' }
 
+// 고민: 7월 한달 구간으로 valid 로직 추가해야할까...? 실제기능이라면 한달구간만 필요한 기능이 아닐테니 필요없을듯
 const createValidMessage = (internalDateRange: InternalDateRange) => {
   const tempFrom = internalDateRange.tempFrom ?? ''
   const tempTo = internalDateRange.tempTo ?? ''
