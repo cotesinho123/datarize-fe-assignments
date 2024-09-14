@@ -1,11 +1,9 @@
 import { PICO_DATA } from '../../../pico/class-name.ts'
 import { useDateRangeDispatch, useDateRangeValue } from './date-range-field.hooks.ts'
-import { dateRangeMessage } from './date-range-field.utils.ts'
 
 export const DateRangeField = () => {
   const dataRange = useDateRangeValue()
   const dispatch = useDateRangeDispatch()
-  const { from, to } = dataRange
 
   return (
     <article>
@@ -16,7 +14,6 @@ export const DateRangeField = () => {
             type="date"
             name="from"
             aria-label="Date"
-            value={from}
             onChange={(e) =>
               dispatch({
                 type: 'SET_FROM',
@@ -31,7 +28,6 @@ export const DateRangeField = () => {
             type="date"
             name="to"
             aria-label="Date"
-            value={to}
             onChange={(e) =>
               dispatch({
                 type: 'SET_TO',
@@ -42,8 +38,16 @@ export const DateRangeField = () => {
         </label>
       </div>
       <div>
+        <button
+          type={'button'}
+          onClick={() => {
+            dispatch({ type: 'COMMIT' })
+          }}
+        >
+          날짜 적용하기
+        </button>
         <input aria-invalid aria-describedby={'invalid-helper'} aria-hidden style={{ display: 'none' }} />
-        {<small id="invalid-helper">{dateRangeMessage(dataRange)}</small>}
+        {<small id="invalid-helper">{dataRange.validMessage}</small>}
       </div>
     </article>
   )

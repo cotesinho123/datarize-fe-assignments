@@ -9,6 +9,7 @@ const usePurchaseFrequencyQuery = (args: Args) =>
     queryKey: ['purchaseFrequency', args],
     queryFn: () => apis.purchaseFrequency.list(args),
     enabled: isDateRangeValid(args),
+    keepPreviousData: true,
   })
 
 export const BarChart = () => {
