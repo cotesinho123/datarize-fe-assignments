@@ -1,9 +1,10 @@
 import { CustomerListArgs } from '../../../apis/customers.ts'
 import { FC } from 'react'
 import { PICO_DATA } from '../../../pico/class-name.ts'
-import { ConvertTableRowReturn, useCustomerTableQuery } from './use-customer-table-query.ts'
+import { useCustomerTableQuery } from './use-customer-table-query.ts'
 import { LoadingSkeleton } from '../../loading-skeleton.tsx'
 import { isAxiosError } from 'axios'
+import { TableRow } from './table-row.tsx'
 
 type CustomerTableProps = CustomerListArgs
 
@@ -72,15 +73,5 @@ const TableBody: FC<CustomerTableProps> = (props) => {
         <TableRow key={customer.id} {...customer} />
       ))}
     </tbody>
-  )
-}
-const TableRow: FC<ConvertTableRowReturn> = ({ id, name, count, totalAmount }) => {
-  return (
-    <tr style={{ cursor: 'pointer' }}>
-      <th scope={PICO_DATA.table.scope.row}>{id}</th>
-      <td>{name}</td>
-      <td>{count}</td>
-      <td>{totalAmount}</td>
-    </tr>
   )
 }
