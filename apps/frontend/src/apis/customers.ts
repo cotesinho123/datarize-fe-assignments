@@ -2,7 +2,7 @@ import { fetcher } from './fetcher.ts'
 /**
  * 상품 구매한 고객 장보
  * */
-type CustomerDto = {
+export type CustomerDto = {
   id: number
   name: string
   /**
@@ -14,10 +14,10 @@ type CustomerDto = {
    * */
   totalAmount: number
 }
-type CustomerListArgs = {
+export type CustomerListArgs = {
   /**
    * 정렬 기준
-   * default : asc
+   * default :undefined 일때는 id 순으로 정렬
    */
   sortBy?: 'asc' | 'desc'
   /**
@@ -27,7 +27,7 @@ type CustomerListArgs = {
 }
 type CustomersListResponse = CustomerDto[]
 
-type CustomerPurchaseDto = {
+export type CustomerPurchaseDto = {
   /**
    * format : 'YYYY-MM-DD'
    * */
@@ -47,10 +47,10 @@ type CustomerPurchaseDto = {
   imgSrc: string
 }
 
-type CustomerPurchaseListArgs = {
+export type CustomerPurchaseListArgs = {
   customerId: number
 }
-type CustomerPurchaseListResponse = CustomerPurchaseDto[]
+export type CustomerPurchaseListResponse = CustomerPurchaseDto[]
 
 export const customers = {
   /**

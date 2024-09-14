@@ -1,6 +1,6 @@
 import { fetcher } from './fetcher.ts'
 
-type PurchaseFrequencyListArgs = {
+export type PurchaseFrequencyListArgs = {
   /**
    * format : 'YYYY-MM-DD'
    */
@@ -10,12 +10,12 @@ type PurchaseFrequencyListArgs = {
    */
   to?: string
 }
-type PurchaseFrequencyDto = {
+export type PurchaseFrequencyDto = {
   /** range format : `${number} - ${number}` **/
   range: string
   count: number
 }
-type PurchaseFrequencyListResponse = PurchaseFrequencyDto[]
+export type PurchaseFrequencyListResponse = PurchaseFrequencyDto[]
 export const purchaseFrequency = {
   /**
    * 한 달 동안의 모든 구매 데이터를 반환
