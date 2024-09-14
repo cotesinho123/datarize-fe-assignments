@@ -1,19 +1,34 @@
 import { CustomerListArgs } from '../../../apis/customers.ts'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { PICO_DATA } from '../../../pico/class-name.ts'
 import { useCustomerTableQuery } from './use-customer-table-query.ts'
 import { LoadingSkeleton } from '../../loading-skeleton.tsx'
 import { isAxiosError } from 'axios'
 import { TableRow } from './table-row.tsx'
+import { CustomerDetailModal } from './cusotmer-detail-modal.tsx'
+import { SimpleCustomerInfo, WithOnSelectCustomerInfo } from './customer-table.types.ts'
 
 type CustomerTableProps = CustomerListArgs
 
 export const CustomerTable: FC<CustomerTableProps> = (props) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedCustomerInfo, setSelectedCustomerInfo] = useState<SimpleCustomerInfo | undefined>(undefined)
+
+  const handleSelectCustomer = (info: SimpleCustomerInfo) => {
+    setSelectedCustomerInfo(info)
+    setIsOpen(true)
+  }
+  const closeModal = () => {
+    setIsOpen(false)
+  }
   return (
-    <table className={PICO_DATA.layout.classname.container}>
-      <TableHeader />
-      <TableBody {...props} />
-    </table>
+    <>
+      <table className={PICO_DATA.layout.classname.container}>
+        <TableHeader />
+        <TableBody {...props} onSelectCustomerInfo={handleSelectCustomer} />
+      </table>
+      <CustomerDetailModal isOpen={isOpen} customerInfo={selectedCustomerInfo} onClose={closeModal} />
+    </>
   )
 }
 
@@ -30,7 +45,7 @@ const TableHeader = () => {
   )
 }
 
-const TableBody: FC<CustomerTableProps> = (props) => {
+const TableBody: FC<WithOnSelectCustomerInfo<CustomerTableProps>> = (props) => {
   const { data, isLoading, error, isError } = useCustomerTableQuery(props)
   if (isLoading) {
     return (
@@ -70,7 +85,7 @@ const TableBody: FC<CustomerTableProps> = (props) => {
   return (
     <tbody>
       {data.map((customer) => (
-        <TableRow key={customer.id} {...customer} />
+        <TableRow key={customer.id} {...customer} onSelectCustomerInfo={props.onSelectCustomerInfo} />
       ))}
     </tbody>
   )
