@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useDateRangeValue } from './date-range-field/date-range-field.hooks.ts'
 import { isDateRangeValid } from './date-range-field/date-range-field.utils.ts'
 import ReactECharts from 'echarts-for-react'
+import { LoadingSkeleton } from '../loading-skeleton.tsx'
 
 type Args = Parameters<typeof apis.purchaseFrequency.list>[0]
 const usePurchaseFrequencyQuery = (args: Args) =>
@@ -17,7 +18,7 @@ export const BarChart = () => {
   const dateRange = useDateRangeValue()
   const { data, isLoading, isError } = usePurchaseFrequencyQuery(dateRange)
   if (isLoading) {
-    return <div>로딩 중...</div>
+    return <LoadingSkeleton />
   }
   if (isError) {
     return <div>에러 발생</div>
