@@ -38,6 +38,8 @@ export const DateRangeField = () => {
         </label>
       </div>
       <div>
+        <input aria-invalid aria-describedby={'invalid-helper'} aria-hidden style={{ display: 'none' }} />
+        <small id="invalid-helper">{dataRange.validMessage}</small>
         <button
           type={'button'}
           onClick={() => {
@@ -46,8 +48,6 @@ export const DateRangeField = () => {
         >
           날짜 적용하기
         </button>
-        <input aria-invalid aria-describedby={'invalid-helper'} aria-hidden style={{ display: 'none' }} />
-        {<small id="invalid-helper">{dataRange.validMessage}</small>}
       </div>
     </article>
   )
