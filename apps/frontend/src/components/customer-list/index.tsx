@@ -1,14 +1,14 @@
 import { FC, useState } from 'react'
-import { PurchaseCustomerTable } from './purchase-customer-table.tsx'
 import { CustomerListArgs } from '../../apis/customers.ts'
 import { PICO_DATA } from '../../pico/class-name.ts'
 import { useDebounce } from '../../hooks/use-debounce.ts'
+import { CustomerTable } from './customer-table/customer-table.tsx'
 
 type SortType = CustomerListArgs['sortBy']
 type NameType = CustomerListArgs['name']
 
 const isSortType = (value: string): value is Required<CustomerListArgs>['sortBy'] => value === 'asc' || value === 'desc'
-export const PurchaseCustomerList = () => {
+export const CustomerList = () => {
   const [sort, setSort] = useState<SortType>()
   const [name, setName] = useState<NameType>()
   const debouncedName = useDebounce(name, 300)
@@ -16,7 +16,7 @@ export const PurchaseCustomerList = () => {
     <article>
       <h1>가장 많이 구매한 고객 목록</h1>
       <FilterSection onSortChange={setSort} onNameChange={setName} />
-      <PurchaseCustomerTable sortBy={sort} name={debouncedName} />
+      <CustomerTable sortBy={sort} name={debouncedName} />
     </article>
   )
 }

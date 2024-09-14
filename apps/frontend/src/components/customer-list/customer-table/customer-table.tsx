@@ -1,25 +1,12 @@
-import { CustomerDto, CustomerListArgs } from '../../apis/customers.ts'
-import { PICO_DATA } from '../../pico/class-name.ts'
+import { CustomerListArgs } from '../../../apis/customers.ts'
 import { FC } from 'react'
-import { LoadingSkeleton } from '../loading-skeleton.tsx'
-import { useQuery } from '@tanstack/react-query'
-import { apis } from '../../apis'
+import { PICO_DATA } from '../../../pico/class-name.ts'
+import { ConvertTableRowReturn, useCustomerTableQuery } from './use-customer-table-query.ts'
+import { LoadingSkeleton } from '../../loading-skeleton.tsx'
 
-type PurchaseCustomerTableProps = CustomerListArgs
-const usePurchaseCustomerListQuery = (args: CustomerListArgs) =>
-  useQuery({
-    queryKey: ['customers', args],
-    queryFn: () => apis.customers.list(args),
-    select: (data) => data.map(convertTableRow),
-  })
+type CustomerTableProps = CustomerListArgs
 
-type ConvertTableRowReturn = Omit<CustomerDto, 'totalAmount'> & { totalAmount: string }
-const convertTableRow = (customer: CustomerDto): ConvertTableRowReturn => ({
-  ...customer,
-  totalAmount: `${customer.totalAmount.toLocaleString()}원`,
-})
-
-export const PurchaseCustomerTable: FC<PurchaseCustomerTableProps> = (props) => {
+export const CustomerTable: FC<CustomerTableProps> = (props) => {
   return (
     <table className={PICO_DATA.layout.classname.container}>
       <TableHeader />
@@ -41,8 +28,8 @@ const TableHeader = () => {
   )
 }
 
-const TableBody: FC<PurchaseCustomerTableProps> = (props) => {
-  const { data, isLoading, isError } = usePurchaseCustomerListQuery(props)
+const TableBody: FC<CustomerTableProps> = (props) => {
+  const { data, isLoading, isError } = useCustomerTableQuery(props)
   if (isLoading) {
     return (
       <tbody>
@@ -54,6 +41,7 @@ const TableBody: FC<PurchaseCustomerTableProps> = (props) => {
       </tbody>
     )
   }
+  // TODO: 404 일때는 empty ui 를 보여주는 로직이 필요
   if (isError) {
     return <div>에러 발생</div>
   }
