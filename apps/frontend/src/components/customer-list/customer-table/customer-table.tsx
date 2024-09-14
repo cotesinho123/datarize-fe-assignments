@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { PICO_DATA } from '../../../pico/class-name.ts'
 import { ConvertTableRowReturn, useCustomerTableQuery } from './use-customer-table-query.ts'
 import { LoadingSkeleton } from '../../loading-skeleton.tsx'
+import { isAxiosError } from 'axios'
 
 type CustomerTableProps = CustomerListArgs
 
@@ -29,7 +30,7 @@ const TableHeader = () => {
 }
 
 const TableBody: FC<CustomerTableProps> = (props) => {
-  const { data, isLoading, isError } = useCustomerTableQuery(props)
+  const { data, isLoading, error, isError } = useCustomerTableQuery(props)
   if (isLoading) {
     return (
       <tbody>
@@ -41,9 +42,28 @@ const TableBody: FC<CustomerTableProps> = (props) => {
       </tbody>
     )
   }
-  // TODO: 404 일때는 empty ui 를 보여주는 로직이 필요
+  // todo: 시간 있으면 에러처리 유려하게 하자
   if (isError) {
-    return <div>에러 발생</div>
+    if (isAxiosError(error) && error.response?.status === 404) {
+      return (
+        <tbody>
+          <tr>
+            <td>
+              <div>데이터가 없습니다.</div>
+            </td>
+          </tr>
+        </tbody>
+      )
+    }
+    return (
+      <tbody>
+        <tr>
+          <td>
+            <div>에러가 발생했습니다.</div>
+          </td>
+        </tr>
+      </tbody>
+    )
   }
 
   return (
