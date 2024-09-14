@@ -23,7 +23,7 @@ export const CustomerTable: FC<CustomerTableProps> = (props) => {
   }
   return (
     <>
-      <table className={PICO_DATA.layout.classname.container}>
+      <table className={`${PICO_DATA.table.classname.striped} ${PICO_DATA.layout.classname.container}`}>
         <TableHeader />
         <TableBody {...props} onSelectCustomerInfo={handleSelectCustomer} />
       </table>
